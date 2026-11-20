@@ -88,3 +88,5 @@ workspace-3719c470-b38f-45f6-a6a9-a3524b966a55 (1)/
 APP/native/tract-engine/target/
 # 本地工具目录
 .omc/
+# 后端模型由后端维护，不进前端分支
+backend/models/*.pt
