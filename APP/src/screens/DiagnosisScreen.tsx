@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: fontSize.md,
-    color: colors.white + '80',
+    color: colors.white + 'D9',
   },
 
   // 内容
@@ -672,12 +672,10 @@ const styles = StyleSheet.create({
 
   // 技巧卡片
   tipsCard: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.divider,
     borderRadius: borderRadius.xl,
     padding: spacing.lg,
     marginBottom: spacing.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
   },
   tipsHeader: {
     flexDirection: 'row',
@@ -685,7 +683,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   tipsTitle: {
-    fontSize: fontSize.md,
+    fontSize: fontSize.sm,
     fontWeight: fontWeight.semibold,
     color: colors.text,
     marginLeft: spacing.sm,
@@ -696,7 +694,7 @@ const styles = StyleSheet.create({
   tipItem: {
     fontSize: fontSize.sm,
     color: colors['text-secondary'],
-    lineHeight: 22,
+    lineHeight: 20,
   },
 
   // 快捷入口
