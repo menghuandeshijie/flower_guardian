@@ -12,16 +12,18 @@ console.log('[NotificationService] 模块已加载');
 console.log('[NotificationService] Platform:', Platform.OS);
 console.log('[NotificationService] Notifications:', !!Notifications);
 
-// 配置通知处理行为
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// 配置通知处理行为（浏览器无本地通知能力，跳过注册）
+if (Platform.OS !== 'web') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 export interface NotificationData {
   type: string;
@@ -181,6 +183,11 @@ class NotificationService {
 
   // 获取 Expo Push Token（需要发送到后端）
   getPushToken = async (): Promise<string | null> => {
+    // 浏览器不支持 Expo Push Token
+    if (Platform.OS === 'web') {
+      return null;
+    }
+
     if (!this.expoPushToken) {
       try {
         const tokenData = await Notifications.getExpoPushTokenAsync({
@@ -206,15 +213,18 @@ class NotificationService {
   // 发送本地通知
   triggerNotification = async (title: string, body: string, data: NotificationData) => {
     try {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title,
-          body,
-          data,
-          sound: true,
-        },
-        trigger: null, // 立即发送
-      });
+      // 浏览器没有系统通知：只记录到站内历史
+      if (Platform.OS !== 'web') {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title,
+            body,
+            data,
+            sound: true,
+          },
+          trigger: null, // 立即发送
+        });
+      }
 
       // 同时添加到历史记录
       const notification: NotificationItem = {

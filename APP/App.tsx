@@ -3,7 +3,7 @@
  * 你的掌上植物管家，让养花不再凭感觉
  */
 import React, { useEffect, useState, useRef } from 'react';
-import { StatusBar, View, StyleSheet, AppState, AppStateStatus } from 'react-native';
+import { Platform, StatusBar, View, StyleSheet, AppState, AppStateStatus } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppNavigator } from './src/navigation/AppNavigator';
@@ -20,25 +20,33 @@ function App() {
   useEffect(() => {
     console.log('[App] App 启动，开始初始化推送服务');
 
-    // 初始化本地通知服务（离线模式）
-    reminderNotificationService.init();
+    // 浏览器（Expo Web）不支持本地通知与定时通知，跳过初始化避免报错
+    const isWeb = Platform.OS === 'web';
+    if (!isWeb) {
+      // 初始化本地通知服务（离线模式）
+      reminderNotificationService.init();
 
-    // 初始化 Expo 通知服务
-    notificationService.init().then(result => {
-      console.log('[App] 通知服务初始化结果:', result);
-    });
+      // 初始化 Expo 通知服务
+      notificationService.init().then(result => {
+        console.log('[App] 通知服务初始化结果:', result);
+      });
+    }
 
     // 监听通知
-    const unsubscribe = notificationService.addNotificationReceivedListener((notification) => {
-      console.log('[App] 收到通知:', notification.title, notification.data);
-    });
+    const unsubscribe = isWeb
+      ? () => {}
+      : notificationService.addNotificationReceivedListener((notification) => {
+          console.log('[App] 收到通知:', notification.title, notification.data);
+        });
 
     // 检查登录状态并连接 WebSocket
     checkLoginAndConnectWS();
 
     return () => {
       unsubscribe();
-      webSocketService.disconnectPush();
+      if (!isWeb) {
+        webSocketService.disconnectPush();
+      }
     };
   }, []);
 
@@ -63,6 +71,13 @@ function App() {
   const checkLoginAndConnectWS = async () => {
     try {
       const token = await getToken();
+
+      // 浏览器里只保留登录态，不建立推送长连接（避免 ws 连接失败刷屏）
+      if (Platform.OS === 'web') {
+        setIsLoggedIn(Boolean(token));
+        return;
+      }
+
       if (token) {
         setIsLoggedIn(true);
         console.log('[App] 用户已登录，连接 WebSocket 推送通道...');

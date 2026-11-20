@@ -16,6 +16,11 @@ class ReminderNotificationService {
 
   // 初始化服务
   init = async () => {
+    // 浏览器（Expo Web）不支持本地定时通知，直接跳过
+    if (Platform.OS === 'web') {
+      return;
+    }
+
     // 设置通知渠道（Android）
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('reminders', {
@@ -32,6 +37,12 @@ class ReminderNotificationService {
 
   // 调度提醒通知
   scheduleReminder = async (reminder: SmartReminder): Promise<boolean> => {
+    // 浏览器不支持定时通知：按成功处理，避免 web 预览时误报错误
+    if (Platform.OS === 'web') {
+      console.log('[ReminderNotification] web 环境跳过通知调度:', reminder.id);
+      return true;
+    }
+
     if (!reminder.enabled || !reminder.next_due) {
       return false;
     }
@@ -102,6 +113,12 @@ class ReminderNotificationService {
 
   // 取消所有通知
   cancelAllNotifications = async (): Promise<void> => {
+    // 浏览器没有可取消的系统通知调度
+    if (Platform.OS === 'web') {
+      this.scheduledIds.clear();
+      return;
+    }
+
     try {
       await Notifications.cancelAllScheduledNotificationsAsync();
       this.scheduledIds.clear();
@@ -130,6 +147,12 @@ class ReminderNotificationService {
 
   // 测试通知
   testNotification = async (): Promise<void> => {
+    // 浏览器不支持本地通知，跳过测试
+    if (Platform.OS === 'web') {
+      console.log('[ReminderNotification] web 环境跳过测试通知');
+      return;
+    }
+
     try {
       await Notifications.scheduleNotificationAsync({
         content: {

@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { getToken as getAuthToken } from './auth';
 import { API_BASE_URL } from './config';
 
@@ -37,6 +38,11 @@ class WebSocketService {
   private pushCallbacks: WSCallbacks = {};
 
   connect = async (callbacks?: WSCallbacks): Promise<boolean> => {
+    // 浏览器预览不建立聊天长连接（后端不在同一网段，重连只会刷日志）
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
     this.callbacks = callbacks || {};
     this.isManualClose = false;
 
@@ -172,6 +178,11 @@ class WebSocketService {
 
   // Push notification WebSocket
   connectPush = async (callbacks?: WSCallbacks): Promise<boolean> => {
+    // 浏览器不支持应用内推送长连接
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
     this.pushCallbacks = callbacks || {};
 
     const token = await getAuthToken();
