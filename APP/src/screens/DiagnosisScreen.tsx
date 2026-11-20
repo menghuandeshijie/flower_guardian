@@ -540,7 +540,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: colors.primary,
     paddingTop: spacing.xl,
-    paddingBottom: spacing.xxxl,
+    // 原 xxxl(48)，收窄头部高度，让下方操作卡上移
+    paddingBottom: spacing.xxl,
     borderBottomLeftRadius: borderRadius.xxl,
     borderBottomRightRadius: borderRadius.xxl,
     overflow: 'hidden',
