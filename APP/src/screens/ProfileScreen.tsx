@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 import { colors, spacing } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { getCurrentUser } from '../services/auth';
@@ -99,11 +100,12 @@ export function ProfileScreen({ onNavigate, currentTab, onTabChange, isLoggedIn:
               <View style={styles.profileRow}>
                 <View style={styles.avatarContainer}>
                   <View style={styles.avatar}>
-                    {displayUser?.avatar && typeof displayUser.avatar === 'string' && displayUser.avatar.trim().length > 0 ? (
-                      <Image source={{ uri: displayUser.avatar }} style={styles.avatarImage} />
-                    ) : (
-                      <Icons.User size={40} color="#fff" />
-                    )}
+                    <SafeImage
+                      uri={displayUser?.avatar}
+                      style={styles.avatarImage}
+                      fallbackIcon="user"
+                      fallbackIconSize={40}
+                    />
                   </View>
                   <View style={styles.avatarBadge}>
                     <Icons.Sparkles size={14} color={colors.warning} />

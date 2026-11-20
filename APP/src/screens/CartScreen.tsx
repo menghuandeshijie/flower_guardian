@@ -14,6 +14,7 @@ import { getCart, updateCartItem, deleteCartItem, clearCart, Cart, CartItem } fr
 import { colors, spacing, shadows } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 
 interface CartScreenProps extends Partial<NavigationProps> {}
 
@@ -100,9 +101,11 @@ export function CartScreen({ navigation, onGoBack, onNavigate, isLoggedIn, onReq
 
   const renderItem = ({ item }: { item: CartItem }) => (
     <View style={styles.cartItem}>
-      <Image
-        source={{ uri: item.product_image && typeof item.product_image === 'string' && item.product_image.trim().length > 0 ? item.product_image : 'https://via.placeholder.com/80' }}
+      <SafeImage
+        uri={item.product_image}
         style={styles.productImage}
+        fallbackIcon="image"
+        fallbackLabel={item.product_name}
       />
       <View style={styles.itemInfo}>
         <Text style={styles.productName} numberOfLines={2}>{item.product_name}</Text>

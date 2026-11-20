@@ -15,6 +15,7 @@ import { getAddresses, Address } from '../services/addressService';
 import { colors, spacing, shadows } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 
 interface StoreDetailScreenProps extends Partial<NavigationProps> {
   productId?: number;
@@ -136,9 +137,11 @@ export function StoreDetailScreen({ onGoBack, productId, isLoggedIn, onRequireLo
       </TouchableOpacity>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Image
-          source={{ uri: product.image_url && typeof product.image_url === 'string' && product.image_url.trim().length > 0 ? product.image_url : 'https://via.placeholder.com/300' }}
+        <SafeImage
+          uri={product.image_url}
           style={styles.image}
+          fallbackIcon="image"
+          fallbackLabel={product.name}
         />
 
         <View style={styles.info}>

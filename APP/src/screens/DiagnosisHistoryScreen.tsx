@@ -18,6 +18,7 @@ import { getDiagnoses, deleteDiagnosis, toggleFavorite, DiagnosisRecord } from '
 import { API_BASE_URL } from '../services/config';
 import { colors, spacing, borderRadius, shadows, duration, fontSize, fontWeight, touchTarget } from '../constants/theme';
 import { Icon } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 
 interface DiagnosisHistoryScreenProps {
   onGoBack: () => void;
@@ -233,17 +234,12 @@ export function DiagnosisHistoryScreen({ onGoBack, onNavigate, isLoggedIn, onReq
         android_ripple={{ color: colors.primaryLight + '20' }}
       >
         <View style={styles.cardImageContainer}>
-          {item?.image_url && typeof item.image_url === 'string' && item.image_url.trim().length > 0 ? (
-            <Image
-              source={{ uri: getFullImageUrl(item.image_url) }}
-              style={styles.cardImage}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={[styles.cardImage, styles.cardImagePlaceholder]}>
-              <Icon name="image" size={24} color={colors['text-tertiary']} />
-            </View>
-          )}
+          <SafeImage
+            uri={getFullImageUrl(item.image_url)}
+            style={styles.cardImage}
+            resizeMode="cover"
+            fallbackIcon="image"
+          />
           {item.is_favorite && (
             <View style={styles.favoriteBadge}>
               <Icon name="star" size={12} color={colors.accent} fill={colors.accent} />

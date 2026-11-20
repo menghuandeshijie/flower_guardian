@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Alert, ActivityIndicator, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 import { colors, spacing, borderRadius, shadows } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { getPlantDetail, addToMyGarden, Plant } from '../services/plantService';
@@ -122,13 +123,12 @@ export function EncyclopediaDetailScreen({ onGoBack, ...props }: EncyclopediaDet
 
           <View style={styles.plantInfoContainer}>
             <View style={styles.plantImageWrapper}>
-              {plant?.image_url && typeof plant.image_url === 'string' && plant.image_url.trim().length > 0 ? (
-                <Image source={{ uri: getFullImageUrl(plant.image_url) }} style={styles.plantImage} />
-              ) : (
-                <View style={styles.plantImagePlaceholder}>
-                  <Icons.Flower2 size={56} color={colors.white} />
-                </View>
-              )}
+              <SafeImage
+                uri={getFullImageUrl(plant.image_url)}
+                style={styles.plantImage}
+                fallbackIcon="flower2"
+                fallbackIconSize={56}
+              />
             </View>
             <Text style={styles.plantName}>{plant.name}</Text>
             {plant.scientific_name && (

@@ -8,6 +8,7 @@ import { API_BASE_URL } from '../services/config';
 import { colors, spacing, borderRadius, shadows, duration, fontSize, fontWeight, touchTarget } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { Icon } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 import { BboxOverlay, BboxItem } from '../components/BboxOverlay';
 
 // 检测标签类型
@@ -293,10 +294,11 @@ export function DiagnosisDetailScreen({ route, onNavigate, onGoBack, isLoggedIn 
           {record.image_url && typeof record.image_url === 'string' && record.image_url.trim().length > 0 && (
             <>
               {/* 图片 */}
-              <Image
-                source={{ uri: getFullImageUrl(record.image_url) }}
+              <SafeImage
+                uri={getFullImageUrl(record.image_url)}
                 style={styles.detailImage}
                 resizeMode="cover"
+                fallbackIcon="image"
               />
               {/* 检测框覆盖层 */}
               <BboxOverlay

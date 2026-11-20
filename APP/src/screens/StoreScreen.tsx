@@ -14,6 +14,7 @@ import { getProducts, Product } from '../services/storeService';
 import { colors, spacing, shadows } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 
 interface StoreScreenProps extends Partial<NavigationProps> {}
 
@@ -70,10 +71,12 @@ export function StoreScreen({ navigation, onNavigate, isLoggedIn, onRequireLogin
       style={styles.productCard}
       onPress={() => navigateToDetail(item.id)}
     >
-      <Image
-        source={{ uri: item.image_url && typeof item.image_url === 'string' && item.image_url.trim().length > 0 ? item.image_url : 'https://via.placeholder.com/150' }}
+      <SafeImage
+        uri={item.image_url}
         style={styles.productImage}
         resizeMode="cover"
+        fallbackIcon="image"
+        fallbackLabel={item.name}
       />
       <View style={styles.productInfo}>
         <Text style={styles.productName} numberOfLines={1}>

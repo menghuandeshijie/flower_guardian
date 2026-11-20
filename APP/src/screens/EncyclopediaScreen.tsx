@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, ActivityIndicator, Alert, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icons } from '../components/Icon';
+import SafeImage from '../components/SafeImage';
 import { colors, spacing, borderRadius, shadows, fontSize, fontWeight } from '../constants/theme';
 import { NavigationProps } from '../navigation/AppNavigator';
 import { getPlants, getPlantCategories, getPopularPlants, Plant, PlantCategory } from '../services/plantService';
@@ -291,11 +292,11 @@ export function EncyclopediaScreen({ onNavigate, currentTab, onTabChange }: Ency
                     onPress={() => handlePlantPress(plant)}
                   >
                     <View style={styles.categoryPlantImageContainer}>
-                      {plant?.image_url && typeof plant.image_url === 'string' && plant.image_url.trim().length > 0 ? (
-                        <Image source={{ uri: getFullImageUrl(plant.image_url) }} style={styles.categoryPlantImage} />
-                      ) : (
-                        <Icons.Leaf size={28} color={colors.secondary} />
-                      )}
+                      <SafeImage
+                        uri={getFullImageUrl(plant.image_url)}
+                        style={styles.categoryPlantImage}
+                        fallbackIcon="leaf"
+                      />
                     </View>
                     <Text style={styles.categoryPlantName} numberOfLines={1}>{plant.name}</Text>
                   </TouchableOpacity>
