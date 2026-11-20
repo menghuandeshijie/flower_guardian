@@ -564,6 +564,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white + '20',
     alignItems: 'center',
     justifyContent: 'center',
+    // 压在 headerContent 之上，否则点击会被后渲染的透明容器拦截（web 端表现为返回键点击无反应）
+    zIndex: 10,
   },
   headerContent: {
     alignItems: 'center',
