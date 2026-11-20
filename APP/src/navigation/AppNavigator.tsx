@@ -433,7 +433,7 @@ export function AppNavigator() {
       <View style={styles.contentContainer}>
         {renderContent()}
       </View>
-      <View style={[styles.tabBar, { paddingBottom: Platform.OS === 'ios' ? insets.bottom + 8 : 8 }]}>
+      <View style={[styles.tabBar, { paddingBottom: Platform.OS === 'web' ? 12 : insets.bottom + 8 }]}>
         <View style={styles.tabContent}>
           {tabs.map((tab) => {
             const isActive = currentTab === tab.name;
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 64,
+    height: 76,
     paddingHorizontal: spacing.sm,
   },
   tabItem: {
@@ -489,9 +489,9 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
   },
   mainButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: colors.primary,
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 6,
-    marginBottom: 10,
+    marginBottom: 4,
   },
   tabIcon: { padding: 6, borderRadius: 12 },
   tabIconActive: { backgroundColor: colors.primary + '15' },
