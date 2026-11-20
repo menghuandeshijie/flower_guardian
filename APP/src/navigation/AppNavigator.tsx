@@ -428,9 +428,12 @@ export function AppNavigator() {
     );
   }
 
+  // 底部导航栏实际高度（内容区需让出这段空间，否则页面末尾会被遮挡）
+  const tabBarHeight = 76 + (Platform.OS === 'web' ? 12 : insets.bottom + 8);
+
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer, { paddingBottom: tabBarHeight }]}>
         {renderContent()}
       </View>
       <View style={[styles.tabBar, { paddingBottom: Platform.OS === 'web' ? 12 : insets.bottom + 8 }]}>
