@@ -131,26 +131,28 @@ export function ProfileScreen({ onNavigate, currentTab, onTabChange, isLoggedIn:
           )}
         </View>
 
-        {/* 快捷统计 */}
-        <View style={styles.statsCard}>
-          <View style={styles.statItem}>
-            <View style={[styles.statIcon, { backgroundColor: colors.primary + '15' }]}><Icons.Clock size={18} color={colors.primary} /></View>
-            <Text style={styles.statNumber}>{stats?.this_month_cares || 0}</Text>
-            <Text style={styles.statLabel}>本月养护</Text>
+        {/* 快捷统计（未登录时无数据，整块隐藏） */}
+        {isLoggedIn && (
+          <View style={styles.statsCard}>
+            <View style={styles.statItem}>
+              <View style={[styles.statIcon, { backgroundColor: colors.primary + '15' }]}><Icons.Clock size={18} color={colors.primary} /></View>
+              <Text style={styles.statNumber}>{stats?.this_month_cares || 0}</Text>
+              <Text style={styles.statLabel}>本月养护</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <View style={[styles.statIcon, { backgroundColor: colors.secondary + '15' }]}><Icons.CheckCircle size={18} color={colors.secondary} /></View>
+              <Text style={styles.statNumber}>{stats?.health_distribution?.good || 0}</Text>
+              <Text style={styles.statLabel}>健康植物</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <View style={[styles.statIcon, { backgroundColor: colors.warning + '15' }]}><Icons.Heart size={18} color={colors.warning} /></View>
+              <Text style={styles.statNumber}>{stats?.health_distribution?.fair || 0}</Text>
+              <Text style={styles.statLabel}>正常植物</Text>
+            </View>
           </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <View style={[styles.statIcon, { backgroundColor: colors.secondary + '15' }]}><Icons.CheckCircle size={18} color={colors.secondary} /></View>
-            <Text style={styles.statNumber}>{stats?.health_distribution?.good || 0}</Text>
-            <Text style={styles.statLabel}>健康植物</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <View style={[styles.statIcon, { backgroundColor: colors.warning + '15' }]}><Icons.Heart size={18} color={colors.warning} /></View>
-            <Text style={styles.statNumber}>{stats?.health_distribution?.fair || 0}</Text>
-            <Text style={styles.statLabel}>正常植物</Text>
-          </View>
-        </View>
+        )}
 
         {/* 菜单列表 */}
         <View style={styles.menuSection}>
