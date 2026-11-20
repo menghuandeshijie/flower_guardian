@@ -125,7 +125,7 @@ export function ProfileScreen({ onNavigate, currentTab, onTabChange, isLoggedIn:
               <TouchableOpacity onPress={handleLoginPress} style={styles.loginButton} activeOpacity={0.8}>
                 <Icons.User size={36} color={colors.primary} />
                 <Text style={styles.loginButtonText}>点击登录</Text>
-                <Text style={styles.loginButtonSubtext}>登录后可保存植物和记录</Text>
+                <Text style={styles.loginButtonSubtext}>登录后查看养护数据、保存植物和记录</Text>
               </TouchableOpacity>
             </>
           )}
