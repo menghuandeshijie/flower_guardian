@@ -1,0 +1,35 @@
+[package]
+name = "tract-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Flower Guardian 端侧 YOLO 推理引擎（tract / ONNX）"
+publish = false
+
+[lib]
+name = "tract_engine"
+# cdylib 供 Android(JNI) 使用；staticlib 供 iOS 链接；rlib 供 CLI / 单元测试复用
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[[bin]]
+name = "tract-detect"
+path = "src/main.rs"
+
+[dependencies]
+# tract 的 ONNX 前端 + CPU 推理
+tract-onnx = "0.21"
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+log = "0.4"
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"
+android_logger = "0.14"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+# 不用 panic = "abort"：JNI 层需要 catch_unwind 兜底，避免推理异常直接杀进程
