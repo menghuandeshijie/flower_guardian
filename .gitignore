@@ -78,3 +78,13 @@ backend/dataset/processed/
 backend/dataset/augmented/
 backend/dataset/split/
 workspace-3719c470-b38f-45f6-a6a9-a3524b966a55 (1)/
+
+# ===============================
+# 端侧推理（tract）
+# ===============================
+# 保留 jniLibs 下预编译的推理库，其余 .so 仍忽略
+!APP/android/app/src/main/jniLibs/**/*.so
+# Rust 编译缓存不入库
+APP/native/tract-engine/target/
+# 本地工具目录
+.omc/
